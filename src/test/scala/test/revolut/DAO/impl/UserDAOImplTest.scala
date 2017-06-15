@@ -1,7 +1,7 @@
 package test.revolut.DAO.impl
 
 import org.scalatest.FlatSpec
-import test.revolut.utils.TestUtils._
+import test.revolut.utilities.TestUtils._
 import org.scalatest.BeforeAndAfterEach
 import test.revolut.data.storage.InMemory.storage
 import test.revolut.DAO.UserDAO
@@ -29,7 +29,8 @@ class UserDAOImplTest extends FlatSpec with BeforeAndAfterEach {
   it should "be able to perform correct searches " in {
 
     val first = userDAO.createUser(genString(12))
-    val second = userDAO.createUser(genString(12))
+    var second = userDAO.createUser(genString(12))
+    while(first.equals(second)){second = userDAO.createUser(genString(12))}
 
     val all = userDAO.readUser(None, None)
     assert(all.size === 2)

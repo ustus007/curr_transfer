@@ -3,7 +3,7 @@ package test.revolut.DAO.impl
 import test.revolut.DAO.AccountDAO
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.FlatSpec
-import test.revolut.utils.TestUtils._
+import test.revolut.utilities.TestUtils._
 import test.revolut.DAO.UserDAO
 import test.revolut.DAO.CurrencyDAO
 import test.revolut.data.storage.InMemory.storage
@@ -39,8 +39,8 @@ class AccountDAOImplTest extends FlatSpec with BeforeAndAfterEach {
     val acs = Array[Account](null, null, null, null)
     val amt = Array[BigDecimal](null, null, null, null)
     for (i: Int <- 0 to 3) {
-      cur(i) = currencyDAO.createCurrency(genString(3).toUpperCase, genString(10))
-      usr(i) = userDAO.createUser(genString(12))
+      cur(i) = currencyDAO.createCurrency(genString(3).toUpperCase+i, genString(10)+i)
+      usr(i) = userDAO.createUser(genString(12)+i)
       acs(i) = accountDAO.createAccount(cur(i), usr(i))
       amt(i) = genPosBigDec
       acs(i) = accountDAO.updateAccount(acs(i).uuid, Some(amt(i))).get

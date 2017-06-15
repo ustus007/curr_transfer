@@ -1,4 +1,4 @@
-package test.revolut.utils
+package test.revolut.utilities
 
 import scala.util.Random
 import test.revolut.data.storage.InMemory._

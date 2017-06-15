@@ -1,7 +1,7 @@
 package test.revolut.DAO.impl
 
 import org.scalatest.FlatSpec
-import test.revolut.utils.TestUtils._
+import test.revolut.utilities.TestUtils._
 import test.revolut.DAO.CurrencyDAO
 import test.revolut.data.storage.InMemory.storage
 import test.revolut.entity.Currency
@@ -28,7 +28,7 @@ class CurrencyDAOImplTest extends FlatSpec with BeforeAndAfterEach  {
   it should "be able to perform correct searches " in {
     val created = Array[Currency](null, null, null)
     for (i:Int <- 0 to 2){
-      created(i) = currencyDAO.createCurrency(genString(3).toUpperCase, genString(10))
+      created(i) = currencyDAO.createCurrency(genString(3).toUpperCase+i, genString(10)+i)
     }
     val all = currencyDAO.readCurrency(None, None, None)
     assert(all.size === 3 )

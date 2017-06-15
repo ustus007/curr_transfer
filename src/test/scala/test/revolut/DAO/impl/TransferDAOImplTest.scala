@@ -1,7 +1,7 @@
 package test.revolut.DAO.impl
 
 import org.scalatest.FlatSpec
-import test.revolut.utils.TestUtils._
+import test.revolut.utilities.TestUtils._
 import org.scalatest.BeforeAndAfterEach
 import test.revolut.data.storage.InMemory.storage
 import test.revolut.DAO.UserDAO
@@ -32,8 +32,8 @@ class TransferDAOImplTest extends FlatSpec with BeforeAndAfterEach {
     val cur1 = currencyDAO.createCurrency(genString(3).toUpperCase, genString(10))
     val usr1 = userDAO.createUser(genString(12))
     val acFrom = accountDAO.createAccount(cur1, usr1)
-    val cur2 = currencyDAO.createCurrency(genString(3).toUpperCase, genString(10))
-    val usr2 = userDAO.createUser(genString(12))
+    val cur2 = currencyDAO.createCurrency(genString(3).toUpperCase+"_", genString(10)+"_")
+    val usr2 = userDAO.createUser(genString(12)+"_")
     val acTo = accountDAO.createAccount(cur2, usr2)
     val created = transferDAO.createTransfer(acFrom, acTo, genPosBigDec)
     assert(storage.transfers.filter { x => x.uuid.equals(created.uuid) }.size == 1)
@@ -52,11 +52,11 @@ class TransferDAOImplTest extends FlatSpec with BeforeAndAfterEach {
     val acTo = Array[Account](null, null, null, null, null, null)
     val created = Array[Transfer](null, null, null, null, null, null)
     for (i: Int <- 0 to 5) {
-      cur1(i) = currencyDAO.createCurrency(genString(3).toUpperCase, genString(10))
-      usr1(i) = userDAO.createUser(genString(12))
+      cur1(i) = currencyDAO.createCurrency(genString(3).toUpperCase+i, genString(10)+i)
+      usr1(i) = userDAO.createUser(genString(12)+i)
       acFrom(i) = accountDAO.createAccount(cur1(i), usr1(i))
-      cur2(i) = currencyDAO.createCurrency(genString(3).toUpperCase, genString(10))
-      usr2(i) = userDAO.createUser(genString(12))
+      cur2(i) = currencyDAO.createCurrency(genString(3).toUpperCase+"_"+i, genString(10)+"_"+i)
+      usr2(i) = userDAO.createUser(genString(12)+"_"+i)
       acTo(i) = accountDAO.createAccount(cur2(i), usr2(i))
       created(i) = transferDAO.createTransfer(acFrom(i), acTo(i), genPosBigDec)
       created(i) = transferDAO.updateTransfer(created(i).uuid, Some(Random.nextInt() % 2 == 0)).get
@@ -110,8 +110,8 @@ class TransferDAOImplTest extends FlatSpec with BeforeAndAfterEach {
     val cur1 = currencyDAO.createCurrency(genString(3).toUpperCase, genString(10))
     val usr1 = userDAO.createUser(genString(12))
     val acFrom = accountDAO.createAccount(cur1, usr1)
-    val cur2 = currencyDAO.createCurrency(genString(3).toUpperCase, genString(10))
-    val usr2 = userDAO.createUser(genString(12))
+    val cur2 = currencyDAO.createCurrency(genString(3).toUpperCase+"_", genString(10)+"_")
+    val usr2 = userDAO.createUser(genString(12)+"_")
     val acTo = accountDAO.createAccount(cur2, usr2)
     val created = transferDAO.createTransfer(acFrom, acTo, genPosBigDec)
     val changed = transferDAO.updateTransfer(created.uuid, Some(true)).get
@@ -126,8 +126,8 @@ class TransferDAOImplTest extends FlatSpec with BeforeAndAfterEach {
     val cur1 = currencyDAO.createCurrency(genString(3).toUpperCase, genString(10))
     val usr1 = userDAO.createUser(genString(12))
     val acFrom = accountDAO.createAccount(cur1, usr1)
-    val cur2 = currencyDAO.createCurrency(genString(3).toUpperCase, genString(10))
-    val usr2 = userDAO.createUser(genString(12))
+    val cur2 = currencyDAO.createCurrency(genString(3).toUpperCase+"_", genString(10)+"_")
+    val usr2 = userDAO.createUser(genString(12)+"_")
     val acTo = accountDAO.createAccount(cur2, usr2)
     val created = transferDAO.createTransfer(acFrom, acTo, genPosBigDec)
     val wrongTry = transferDAO.deleteTransfer("")
