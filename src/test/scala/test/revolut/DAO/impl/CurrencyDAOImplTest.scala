@@ -6,10 +6,11 @@ import test.revolut.DAO.CurrencyDAO
 import test.revolut.data.storage.InMemory.storage
 import test.revolut.entity.Currency
 import org.scalatest.BeforeAndAfterEach
+import test.revolut.DAO.DAOStorage
 
 class CurrencyDAOImplTest extends FlatSpec with BeforeAndAfterEach  {
   
-  val currencyDAO:CurrencyDAO = new CurrencyDAOImpl
+  val currencyDAO:CurrencyDAO = DAOStorage.getOrCreate("currencyDAO", () => { new CurrencyDAOImpl }).asInstanceOf[CurrencyDAO]
   
   override def beforeEach() {
      restoreStorage
@@ -50,7 +51,7 @@ class CurrencyDAOImplTest extends FlatSpec with BeforeAndAfterEach  {
     val created = currencyDAO.createCurrency(genString(3).toUpperCase, genString(10))
     val changed = currencyDAO.updateCurrency(created.uuid, Some(genString(3).toUpperCase), Some(genString(10))).get
     val stored = storage.currencies.filter { x => x.uuid.equals(created.uuid) }.last
-    assert(stored.uuid.equals(created.uuid))
+    assert(stored.uuid.equals(changed.uuid))
     assert(stored.shortName.equals(changed.shortName))
     assert(stored.fullName.equals(changed.fullName))
     val other = currencyDAO.updateCurrency(created.uuid+"0", None, None)

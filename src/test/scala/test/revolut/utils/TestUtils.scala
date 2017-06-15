@@ -13,6 +13,12 @@ object TestUtils {
     result
   }
   
+  def genPosBigDec():BigDecimal = {
+    var x = Random.nextDouble()*100
+    if (x<0) {x = -x}
+    BigDecimal(x)
+  }
+  
   def restoreStorage(){
     storage = Storage(new PSet[User], new PSet[Account], new PSet[Currency], new PList[Transfer])
   }

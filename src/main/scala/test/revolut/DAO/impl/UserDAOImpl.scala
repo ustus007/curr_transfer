@@ -55,25 +55,13 @@ class UserDAOImpl extends UserDAO {
     }.map { x => transformUser(x) }.toList
   }
 
-  override def updateUser(uuid: String, fullName: Option[String], accounts: Option[List[en.Account]]): Option[en.User] = {
+  override def updateUser(uuid: String, fullName: Option[String]): Option[en.User] = {
     val sr: HashSet[st.User] = st.storage.users.filter { x => x.uuid.equals(uuid) }
     if (sr.size == 0) {
       None
     } else {
       val newFullName = if (fullName == None) { sr.last.fullName } else { fullName.get }
-      val newAccounts = if (accounts == None) { sr.last.accounts } else {
-        accounts.get.map { x =>
-          {
-            st.Account(x.uuid, st.storage.currencies.filter { y => y.uuid.equals(x.currency.uuid) }.last, x.amount, sr.last)
-          }
-        }
-      }
       sr.last.fullName = newFullName
-      sr.last.accounts.synchronized({
-        sr.last.accounts.clear
-        sr.last.accounts ++= newAccounts
-      })
-
       Some(transformUser(sr.last))
     }
   }

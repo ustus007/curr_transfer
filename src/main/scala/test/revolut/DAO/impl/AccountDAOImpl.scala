@@ -21,10 +21,12 @@ class AccountDAOImpl extends AccountDAO {
   var transferDAO: TransferDAO = DAOStorage.getOrCreate("transferDAO", () => { new TransferDAOImpl }).asInstanceOf[TransferDAO]
 
   override def transformAccount(internal: st.Account): en.Account = {
-    lazy val result: en.Account = en.Account(internal.uuid,
+    val result: en.Account = en.Account(internal.uuid,
       currencyDAO.transformCurrency(internal.currency.asInstanceOf[st.Currency]),
       internal.amount,
-      userDAO.transformUser(internal.user.asInstanceOf[st.User], List(result)))
+      null)
+    val usr = userDAO.transformUser(internal.user, List(result))
+    result.user = usr
     return result
   }
 
@@ -34,10 +36,12 @@ class AccountDAOImpl extends AccountDAO {
   }
 
   override def createAccount(currency: en.Currency, owner: en.User): en.Account = {
+    val usr = st.storage.users.filter { x => x.uuid.equals(owner.uuid) }.last
     val representation = st.Account(generateUuid,
       st.storage.currencies.filter { x => x.uuid.equals(currency.uuid) }.last,
       BigDecimal(0),
-      st.storage.users.filter { x => x.uuid.equals(owner.uuid) }.last)
+      usr)
+    usr.accounts += representation
     st.storage.accounts += representation
     return transformAccount(representation)
   }

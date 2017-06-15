@@ -32,7 +32,7 @@ class UserManagerImpl extends UserManager {
     } else {
       var result: Option[User] = null
       syncDAO.syncOn(List(usrs.last), () => {
-        result = userDAO.updateUser(uuid, Some(newName), None)
+        result = userDAO.updateUser(uuid, Some(newName))
       })
       result
     }
