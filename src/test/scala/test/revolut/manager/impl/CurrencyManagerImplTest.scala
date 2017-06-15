@@ -1,10 +1,9 @@
-package test.revolut.Manager.impl
+package test.revolut.manager.impl
 
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.FlatSpec
 import test.revolut.utilities.TestUtils._
 import test.revolut.utilities.Util._
-import test.revolut.manager.CurrencyManager
 import test.revolut.manager.impl.CurrencyManagerImpl
 import org.scalamock.scalatest.MockFactory
 import test.revolut.DAO.CurrencyDAO
@@ -12,6 +11,7 @@ import test.revolut.entity.Currency
 import test.revolut.DAO.AccountDAO
 import test.revolut.entity.User
 import test.revolut.entity.Account
+import scala.BigDecimal
 
 class CurrencyManagerImplTest  extends FlatSpec with BeforeAndAfterEach with MockFactory  {
   

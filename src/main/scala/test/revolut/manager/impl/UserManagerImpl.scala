@@ -31,7 +31,9 @@ class UserManagerImpl extends UserManager {
       None
     } else {
       var result: Option[User] = null
-      syncDAO.syncOn(List(usrs.last), () => {
+      val ids = List(usrs.last.uuid)
+      val sync = syncDAO.getSyncObjectByUuids(ids)
+      syncDAO.syncOn(sync, () => {
         result = userDAO.updateUser(uuid, Some(newName))
       })
       result
